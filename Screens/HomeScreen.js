@@ -1,0 +1,122 @@
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  Pressable,
+  TouchableOpacity,
+  ActivityIndicator,
+  FlatList
+} from "react-native";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import ChatListItem from "../Component/ChatListItem/ChatListItem";
+import { Avatar, Button } from "react-native-elements";
+import { auth, db } from "../firebase";
+import { Fontisto, MaterialIcons } from "@expo/vector-icons";
+
+const HomeScreen = ({ navigation }) => {
+  const imageUrl =
+    "https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-avatar-icon-png-image_4162757.jpg";
+  const personName = "Vaibhav";
+  const personMessage = "Hello Vishal, How Are you?";
+
+  const [chats, setChats] = useState([]);
+ const getData = async() => {
+     db.collection("chat").onSnapshot((snapshot) => {
+      setChats(
+       snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    });
+  }
+  useEffect(() => {
+    getData()
+    return () => {
+    
+    };
+  }, []);
+
+  const signOutUser = () => {
+    auth.signOut().then(() => {
+      navigation.replace("Login");
+    });
+  };
+
+  const addChat = () => {
+    navigation.navigate("AddChat");
+  };
+
+  const openCamera = () => {
+    alert("Open Camera");
+  };
+
+  useLayoutEffect(() => {
+    let isEffect = true;
+    if (isEffect) {
+      navigation.setOptions({
+        title: "Signal",
+        headerTitleAlign: "center",
+        headerStyle: { backgroundColor: "#fff" },
+        headerTitleStyle: {
+          color: "black",
+          fontWeight: "bold",
+          alignText: "center",
+        },
+        headerTintColor: "black",
+        headerLeft: () => (
+          <View style={{ marginLeft: 20 }}>
+            <TouchableOpacity activeOpacity={0.5} onPress={signOutUser}>
+              <Avatar source={{ uri: imageUrl }} rounded size="medium" />
+            </TouchableOpacity>
+          </View>
+        ),
+        headerRight: () => (
+          <View
+            style={{
+              marginRight: 20,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity activeOpacity={0.5} onPress={openCamera}>
+              <Fontisto
+                style={{ marginRight: 30 }}
+                name="camera"
+                size={24}
+                color="black"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.5} onPress={addChat}>
+              <MaterialIcons name="edit" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
+        ),
+      });
+    }
+
+    return () => {
+      isEffect = false;
+    };
+  }, [navigation]);
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+
+        {chats.length ? <FlatList
+          data={chats}
+          renderItem={(chat)=>(<ChatListItem data={chat}/>)}
+        /> : <ActivityIndicator size={"large"} />}
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default HomeScreen;
+
+const styles = StyleSheet.create({
+  container: {},
+});
