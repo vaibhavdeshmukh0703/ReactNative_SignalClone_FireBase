@@ -3,8 +3,8 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Button, Input } from "react-native-elements";
 import firebase from "firebase/compat/app";
-import CheckIsEmail from '../Utility/CheckIsEmail'
-import "firebase/compat/auth";  
+import CheckIsEmail from "../Utility/CheckIsEmail";
+import "firebase/compat/auth";
 
 import { auth } from "../firebase";
 const RegisterScreen = ({ navigation }) => {
@@ -28,18 +28,25 @@ const RegisterScreen = ({ navigation }) => {
       isEffect = false;
     };
   }, [navigation]);
-
+  //https://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png
+  //https://www.pngmart.com/files/22/User-Avatar-Profile-PNG.png'
   const Register = () => {
-    if (!userName || !email || !password) { alert("Please Enter Valid Full Name,Email,Password"); return }
-    else if (!CheckIsEmail(email)) { alert("Please Enter valid Email Id");  return}
+    console.log(userName, email, password, imageUrl);
+    if (!userName || !email || !password) {
+      alert("Please Enter Valid Full Name,Email,Password");
+      return;
+    } else if (!CheckIsEmail(email)) {
+      alert("Please Enter valid Email Id");
+      return;
+    }
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
         authUser.user.updateProfile({
           displayName: userName,
-          photoUrl:
+          photoURL:
             imageUrl ||
-            "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG.png",
+            "https://www.shareicon.net/download/2016/05/24/770139_man_512x512.png",
         });
       })
       .catch((error) => {
@@ -55,7 +62,7 @@ const RegisterScreen = ({ navigation }) => {
     >
       <StatusBar style="light" />
       <Text h3 style={styles.title}>
-        Create A Signal Account
+        Create Account
       </Text>
       <View style={styles.inputContainer}>
         <Input
@@ -63,12 +70,14 @@ const RegisterScreen = ({ navigation }) => {
           type="text"
           value={userName}
           onChangeText={setUsername}
+          style={styles.input}
         />
         <Input
           placeholder="Email"
           type="email"
           value={email}
           onChangeText={setEmail}
+          style={styles.input}
         />
         <Input
           placeholder="password"
@@ -76,6 +85,7 @@ const RegisterScreen = ({ navigation }) => {
           secureTextEntry
           value={password}
           onChangeText={setPassword}
+          style={styles.input}
         />
         <Input
           placeholder="Profile Picture Url (Optional)"
@@ -83,6 +93,7 @@ const RegisterScreen = ({ navigation }) => {
           value={imageUrl}
           onChangeText={setImageUrl}
           onSubmitEditing={Register}
+          style={styles.input}
         />
 
         <Button title="Register" onPress={Register} />
@@ -102,4 +113,5 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   inputContainer: { marginBottom: 10 },
+  input: { outlineStyle: "none" },
 });

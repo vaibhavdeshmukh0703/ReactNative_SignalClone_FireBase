@@ -3,14 +3,15 @@ import React, { useLayoutEffect, useState } from "react";
 import { Avatar, Button, Input } from "react-native-elements";
 import { KeyboardAvoidingView } from "react-native-web";
 import { AntDesign } from "@expo/vector-icons";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 const AddChat = ({ navigation }) => {
   const [input, setAddChat] = useState("");
+  console.log("press");
   useLayoutEffect(() => {
     let isEffect = true;
     if (isEffect) {
       navigation.setOptions({
-        title: "Add Chat To Screen",
+        title: "Add ChatGroup To Screen",
       });
     }
     return () => {
@@ -19,14 +20,19 @@ const AddChat = ({ navigation }) => {
   }, [navigation]);
 
   const createChat = async () => {
-    if (!input) { alert("Please Enter Message"); return}
+    if (!input) {
+      alert("Please Enter Chat Group Name");
+      return;
+    }
     await db
       .collection("chat")
-      .add({chatName : input})
+      .add({ chatName: input })
       .then(() => {
         navigation.goBack();
       })
-      .catch((error)=>{alert(error)})
+      .catch((error) => {
+        alert(error);
+      });
   };
   return (
     <KeyboardAvoidingView
@@ -38,14 +44,15 @@ const AddChat = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <AntDesign name="wechat" size={24} color="#3777f0" />
         <Input
-          placeholder="Add chats"
+          placeholder="Insert chat Group Name"
           type="text"
           value={input}
           onChangeText={setAddChat}
           onSubmitEditing={createChat}
+          style={styles.input}
         />
       </View>
-      <Button title="Create New Chat" onPress={createChat} />
+      <Button title="Create New Chat Group" onPress={createChat} />
     </KeyboardAvoidingView>
   );
 };
@@ -56,10 +63,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor:"white"
+    backgroundColor: "white",
   },
   inputContainer: {
     flexDirection: "row",
-    alignItems:"center"
+    alignItems: "center",
+  },
+  input: {
+    outlineStyle: "none",
   },
 });

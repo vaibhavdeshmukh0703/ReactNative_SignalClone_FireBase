@@ -58,7 +58,8 @@ const LoginScreen = ({ navigation }) => {
       <Image
         style={styles.image}
         source={{
-          uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Signal-Logo.svg/1200px-Signal-Logo.svg.png",
+          uri: "https://cdn.dribbble.com/users/86597/screenshots/10992949/media/5796fed19aa2ac997589a341f369d9b1.png?compress=1&resize=400x300",
+          // uri: "https://media-exp1.licdn.com/dms/image/C560BAQEP28Ge1vLJiw/company-logo_200_200/0/1650968075368?e=2147483647&v=beta&t=4qRCUArkBbYIOAMUkS8-XwbvVCF140dyyWXVzOsAIbk",
         }}
       />
 
@@ -73,6 +74,7 @@ const LoginScreen = ({ navigation }) => {
           placeholder="Password"
           secureTextEntry
           onChangeText={setPassword}
+          onSubmitEditing={signIn}
         />
         <View style={styles.buttonContainer}>
           <Button title="LOGIN" style={styles.button} onPress={signIn} />
@@ -100,9 +102,11 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     resizeMode: "cover",
-    borderRadius: 25,
+    borderRadius: 100,
   },
-  input: {},
+  input: {
+    outlineStyle: "none",
+  },
   buttonContainer: {},
   button: { marginTop: 10 },
 });

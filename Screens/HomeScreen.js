@@ -16,14 +16,19 @@ import { auth, db } from "../firebase";
 import { Fontisto, MaterialIcons } from "@expo/vector-icons";
 
 const HomeScreen = ({ navigation }) => {
-  const imageUrl =
-    "https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-avatar-icon-png-image_4162757.jpg";
-  const personName = "Vaibhav";
-  const personMessage = "Hello Vishal, How Are you?";
+  // const imageUrl =
+  //   "https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-avatar-icon-png-image_4162757.jpg";
+  // const personName = "Vaibhav";
+  // const personMessage = "Hello Vishal, How Are you?";
 
+  
   const [chats, setChats] = useState([]);
  const getData = async() => {
-     db.collection("chat").onSnapshot((snapshot) => {
+  //db.collection("chat").where("userId"===auth.currentUser.uid).onSnapshot
+     
+  }
+  useEffect(() => {
+   const unsubscribe = db.collection("chat").onSnapshot((snapshot) => {
       setChats(
        snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -31,12 +36,7 @@ const HomeScreen = ({ navigation }) => {
         }))
       );
     });
-  }
-  useEffect(() => {
-    getData()
-    return () => {
-    
-    };
+    return unsubscribe;
   }, []);
 
   const signOutUser = () => {
@@ -57,7 +57,7 @@ const HomeScreen = ({ navigation }) => {
     let isEffect = true;
     if (isEffect) {
       navigation.setOptions({
-        title: "Signal",
+        title: "Cub2King",  
         headerTitleAlign: "center",
         headerStyle: { backgroundColor: "#fff" },
         headerTitleStyle: {
@@ -69,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
         headerLeft: () => (
           <View style={{ marginLeft: 20 }}>
             <TouchableOpacity activeOpacity={0.5} onPress={signOutUser}>
-              <Avatar source={{ uri: imageUrl }} rounded size="medium" />
+              <Avatar source={{ uri: auth.currentUser.photoURL   }} rounded size="medium" />
             </TouchableOpacity>
           </View>
         ),
@@ -104,13 +104,12 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-
-        {chats.length ? <FlatList
+      
+        {chats.length? <FlatList
           data={chats}
           renderItem={(chat)=>(<ChatListItem data={chat}/>)}
-        /> : <ActivityIndicator size={"large"} />}
-      </ScrollView>
+        />:(<ActivityIndicator size="large" color='#3777f0'/>)} 
+      
     </SafeAreaView>
   );
 };
