@@ -6,8 +6,8 @@ import moment from "moment";
 const Message = (props) => {
   const message = props.message.item.data.message;
   const photoURL = props.message.item.data.photoUrl;
-
-  const time = moment(moment(props.message.item.data.timestamp.seconds*1000).format('LLLL')).from(moment()) 
+  //console.log(props.message.item.data.timestamp.seconds);
+ // const time = moment(moment(props.message.item.data.timestamp.seconds*1000).format('LLLL')).from(moment()) 
   //console.log(props.message.item.data)
   //const isMe = false;
   const isMe = props.message.item.data.email === auth.currentUser.email;
@@ -17,9 +17,10 @@ const Message = (props) => {
         styles.component,
         isMe ? styles.senderMessageComponent : styles.receiverMessage,
       ]}
+      numberOfLine={1}
     >
       <Text style={styles.message}>{message}</Text>
-      <Text style={styles.subMessage}>{time}</Text>
+      {/* <Text style={styles.subMessage}>{time}</Text> */}
       <View style={styles.avatarContainer}>
              <Avatar source={{ uri:photoURL}} size="small" rounded />
       </View>

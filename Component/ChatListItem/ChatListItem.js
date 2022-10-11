@@ -49,7 +49,7 @@ console.log(props.data.item.id);
         <Avatar source={{ uri: chatMessags?.[0]?.data?.photoUrl ||  imageUrl }} rounded size="medium" />
         <ListItem.Content>
           <ListItem.Title style={{ fontWeight: "bold" }}>
-            {props.data.item.data.chatName}{" "}
+            {props.data.item.data.chatName}{" "}  
           </ListItem.Title>
           <ListItem.Subtitle
             style={{ fontWeight: "500", marginTop: 5 }}

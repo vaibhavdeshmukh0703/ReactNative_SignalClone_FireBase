@@ -82,7 +82,7 @@ const ChatScreen = ({ navigation, route }) => {
         },
         headerBackTitleVisible: false,
         headerTitle: () => (
-          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+          <View style={{  flexDirection: "row", alignItems: "center" }}>
             <Avatar
               rounded
               size="small"
@@ -96,7 +96,7 @@ const ChatScreen = ({ navigation, route }) => {
                 fontWeight: "bold",
                 marginLeft: 10,
                 color: "white",
-                
+               
               }}
             >
               {chatName}
