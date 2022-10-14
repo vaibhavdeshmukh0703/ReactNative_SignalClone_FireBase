@@ -9,7 +9,7 @@ const imageUrl =
 
 const ChatListItem = (props) => {
   const [chatMessags, setChatMessages] = useState([]);
-console.log(props.data.item.id);
+  console.log(props.data.item.id);
   useEffect(() => {
     const unsubscribe = db
       .collection('chat')

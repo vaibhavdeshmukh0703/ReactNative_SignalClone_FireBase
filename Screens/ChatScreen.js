@@ -95,8 +95,7 @@ const ChatScreen = ({ navigation, route }) => {
                 fontSize: 20,
                 fontWeight: "bold",
                 marginLeft: 10,
-                color: "white",
-               
+                color: "white",              
               }}
             >
               {chatName}

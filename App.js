@@ -20,7 +20,7 @@ const globalScreenOptions = {
     fontWeight: "bold",
   },
   headerTitleAlign:"center",
-  headerTintColor: " white",
+  headerTintColor: "white",
 };
 export default function App() {
   return (

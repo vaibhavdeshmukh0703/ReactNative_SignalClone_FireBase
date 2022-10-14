@@ -23,6 +23,7 @@ const HomeScreen = ({ navigation }) => {
 
   
   const [chats, setChats] = useState([]);
+  console.log(chats)
  const getData = async() => {
   //db.collection("chat").where("userId"===auth.currentUser.uid).onSnapshot
      
@@ -105,10 +106,10 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       
-        {chats.length? <FlatList
+        {chats.length ? (<FlatList
           data={chats}
           renderItem={(chat)=>(<ChatListItem data={chat}/>)}
-        />:(<ActivityIndicator size="large" color='#3777f0'/>)} 
+        />):(<ActivityIndicator size="large" color='#3777f0'/>)} 
       
     </SafeAreaView>
   );
