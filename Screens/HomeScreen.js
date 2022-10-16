@@ -7,7 +7,8 @@ import {
   Pressable,
   TouchableOpacity,
   ActivityIndicator,
-  FlatList
+  FlatList,
+  Dimensions,
 } from "react-native";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import ChatListItem from "../Component/ChatListItem/ChatListItem";
@@ -21,23 +22,33 @@ const HomeScreen = ({ navigation }) => {
   // const personName = "Vaibhav";
   // const personMessage = "Hello Vishal, How Are you?";
 
-  
   const [chats, setChats] = useState([]);
-  console.log(chats)
- const getData = async() => {
-  //db.collection("chat").where("userId"===auth.currentUser.uid).onSnapshot
-     
-  }
-  useEffect(() => {
-   const unsubscribe = db.collection("chat").onSnapshot((snapshot) => {
+  const [isLoading, setIsLoading] = useState("true");
+  //console.log(chats)
+  const getData = async () => {
+    db.collection("chat").onSnapshot((snapshot) => {
       setChats(
-       snapshot.docs.map((doc) => ({
+        snapshot.docs.map((doc) => ({
           id: doc.id,
           data: doc.data(),
         }))
       );
+      setIsLoading("false");
     });
-    return unsubscribe;
+  };
+  useEffect(() => {
+    let isEffect = true;
+    if (isEffect) {
+      getData();
+    }
+    return () => {
+      isEffect = false;
+     // console.log("comp is unmount");
+     // console.table(chats.item);
+    };
+
+    console.log("After network call", isLoading);
+    //console.log(chats)
   }, []);
 
   const signOutUser = () => {
@@ -58,9 +69,9 @@ const HomeScreen = ({ navigation }) => {
     let isEffect = true;
     if (isEffect) {
       navigation.setOptions({
-        title: "Cub2King",  
+        title: "Cub2King",
         headerTitleAlign: "center",
-        headerStyle: { backgroundColor: "#fff" },
+        headerStyle: { backgroundColor: "#fff", padding: 30 },
         headerTitleStyle: {
           color: "black",
           fontWeight: "bold",
@@ -68,23 +79,27 @@ const HomeScreen = ({ navigation }) => {
         },
         headerTintColor: "black",
         headerLeft: () => (
-          <View style={{ marginLeft: 20 }}>
+          <View style={{ marginLeft: 0 }}>
             <TouchableOpacity activeOpacity={0.5} onPress={signOutUser}>
-              <Avatar source={{ uri: auth.currentUser.photoURL   }} rounded size="medium" />
+              <Avatar
+                source={{ uri: auth.currentUser.photoURL }}
+                rounded
+                size="medium"
+              />
             </TouchableOpacity>
           </View>
         ),
         headerRight: () => (
           <View
             style={{
-              marginRight: 20,
+              marginRight: 0,
               flexDirection: "row",
               alignItems: "center",
             }}
           >
             <TouchableOpacity activeOpacity={0.5} onPress={openCamera}>
               <Fontisto
-                style={{ marginRight: 30 }}
+                style={{ marginRight: 20 }}
                 name="camera"
                 size={24}
                 color="black"
@@ -105,12 +120,15 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      
-        {chats.length ? (<FlatList
+      {isLoading == "true" ? (
+        <ActivityIndicator size="large" color="#3777f0" />
+      ) : (
+        <FlatList
           data={chats}
-          renderItem={(chat)=>(<ChatListItem data={chat}/>)}
-        />):(<ActivityIndicator size="large" color='#3777f0'/>)} 
-      
+          renderItem={(chat) => <ChatListItem data={chat} />}
+          // renderItem={(chat)=>(console.log(chat.item))}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -118,5 +136,8 @@ const HomeScreen = ({ navigation }) => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+    height: Dimensions.get("window").height,
+  },
 });

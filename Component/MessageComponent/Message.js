@@ -17,11 +17,11 @@ const Message = (props) => {
         styles.component,
         isMe ? styles.senderMessageComponent : styles.receiverMessage,
       ]}
-      numberOfLine={1}
+  
     >
-      <Text style={styles.message}>{message}</Text>
+      <Text style={styles.message} numberOfLines={1} ellipsizeMode="tail">{message}</Text>
       {/* <Text style={styles.subMessage}>{time}</Text> */}
-      <View style={styles.avatarContainer}>
+      <View style={[isMe?styles.rightAvatarContainer:styles.leftAvatarContainer]}>
              <Avatar source={{ uri:photoURL}} size="small" rounded />
       </View>
       
@@ -33,12 +33,17 @@ export default Message;
 
 const styles = StyleSheet.create({
   component: {
-    marginBottom: 25,
+    marginBottom: 40,
     position:"relative"
   },
-  avatarContainer:{
+  rightAvatarContainer:{
     position:"absolute",
     right:-15,
+    bottom:-22,
+  },
+  leftAvatarContainer:{
+    position:"absolute",
+    left:-15,
     bottom:-22,
   },
   senderMessageComponent: {
@@ -60,9 +65,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   message: {
-    fontWeight: "500",
+    fontWeight:"500",
     fontSize: 18,
     color: "white",
+    textTransform :"capitalize"
   },
   subMessage:{
     fontSize:12,

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar, ListItem } from "react-native-elements";
@@ -9,7 +9,7 @@ const imageUrl =
 
 const ChatListItem = (props) => {
   const [chatMessags, setChatMessages] = useState([]);
-  console.log(props.data.item.id);
+  // console.log(props.data.item.id);
   useEffect(() => {
     const unsubscribe = db
       .collection('chat')
@@ -26,7 +26,7 @@ const ChatListItem = (props) => {
 
     return unsubscribe;
   },[]);
-  console.log("chatMessage",chatMessags); 
+  // console.log("chatMessage",chatMessags); 
   const navigation = useNavigation();
   const goToChatScreen = () => {
     navigation.navigate("Chat", {
@@ -34,10 +34,10 @@ const ChatListItem = (props) => {
       chatName: props.data.item.data.chatName,
     }); 
   };
-
+//const time = "wait"
   const time = moment(chatMessags?.[0]?.data?.timestamp?.seconds*1000).format("LLLL");
   const newTime = moment(time).from(moment())
-  console.log("Time Which we get-->",newTime);
+  // console.log("Time Which we get-->",newTime);
   //console.log(chatMessags?.[0]?.data)
   return (
     <TouchableOpacity
@@ -45,23 +45,27 @@ const ChatListItem = (props) => {
       onPress={goToChatScreen}
       bottomDivider
     >
-      <ListItem key={props.data.item.id}>
-        <Avatar source={{ uri: chatMessags?.[0]?.data?.photoUrl ||  imageUrl }} rounded size="medium" />
-        <ListItem.Content>
-          <ListItem.Title style={{ fontWeight: "bold" }}>
-            {props.data.item.data.chatName}{" "}  
-          </ListItem.Title>
-          <ListItem.Subtitle
-            style={{ fontWeight: "500", marginTop: 5 }}
+     <ListItem style={styles.container}>
+       <Avatar source={{ uri: chatMessags?.[0]?.data?.photoUrl ||  imageUrl }} rounded size="medium" />
+       <ListItem.Content>
+        <ListItem.Title style={{ fontWeight:"bold",textTransform:"capitalize"}} numberOfLines={1} ellipsizeMode="tail">
+          {props.data.item.data.chatName}{" "} 
+        </ListItem.Title>
+        <ListItem.Subtitle
+            style={{ marginTop:5,fontWeight:'normal',textTransform:"capitalize" }}
             numberOfLines={1}
           >
           {chatMessags?.[0]?.data?.message}
           </ListItem.Subtitle>
-        </ListItem.Content>
+       </ListItem.Content>
+      {newTime !="Invalid date" ?<Text>{newTime} by {chatMessags?.[0]?.data?.displayName}</Text>:<Text>No Message</Text>}
+
+     </ListItem>
+      {/* 
         {newTime === "Invalid date"?<Text style={styles.time}>No Last Message</Text>:<Text style={styles.time}>
           {newTime} by {chatMessags?.[0]?.data?.displayName}</Text>}
         
-      </ListItem>
+       */}
     </TouchableOpacity>
   );
 };
@@ -69,6 +73,10 @@ const ChatListItem = (props) => {
 export default ChatListItem;
 
 const styles = StyleSheet.create({
+  // container:{
+  //   flex:1,
+  //   height:Dimensions.get("screen").height,
+  // },
   time:{
     color: "#808080",
     fontWeight:12,

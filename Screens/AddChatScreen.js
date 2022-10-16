@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import { StyleSheet, Text, View, Dimension } from "react-native";
+import React, { useLayoutEffect, useState, useMemo, memo } from "react";
 import { Avatar, Button, Input } from "react-native-elements";
-import { KeyboardAvoidingView } from "react-native-web";
+import { KeyboardAvoidingView } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { auth, db } from "../firebase";
-const AddChat = ({ navigation }) => {
+const AddChatScreen = ({ navigation }) => {
   const [input, setAddChat] = useState("");
-  console.log("press");
+  // console.log("press");
   useLayoutEffect(() => {
     let isEffect = true;
     if (isEffect) {
@@ -35,14 +35,9 @@ const AddChat = ({ navigation }) => {
       });
   };
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      enabled
-      keyboardVerticalOffset={100}
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <AntDesign name="wechat" size={24} color="#3777f0" />
+        <AntDesign name="wechat" size={40} color="#3777f0" />
         <Input
           placeholder="Insert chat Group Name"
           type="text"
@@ -53,11 +48,11 @@ const AddChat = ({ navigation }) => {
         />
       </View>
       <Button title="Create New Chat Group" onPress={createChat} />
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
-export default AddChat;
+export default AddChatScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -67,7 +62,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   input: {
     outlineStyle: "none",

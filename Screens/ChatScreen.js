@@ -30,7 +30,7 @@ const ChatScreen = ({ navigation, route }) => {
   const chatName = route.params.chatName;
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  console.log(messages);
+  // console.log(messages);
   useLayoutEffect(() => {
     const unsubscribe = db
       .collection("chat")
@@ -47,7 +47,7 @@ const ChatScreen = ({ navigation, route }) => {
       });
 
     return () => {
-      console.log(messages);
+      // console.log(messages);
       unsubscribe;
     };
   }, [route]);
@@ -74,15 +74,15 @@ const ChatScreen = ({ navigation, route }) => {
     let isEffect = true;
     if (isEffect) {
       navigation.setOptions({
-        headerTitleAlign: "left",
-        title: "Chat",
-        headerTitleStyle: {
-          fontWeight: "bold",
-          marginLeft: 30,
-        },
+        // headerTitleAlign: "left",
+        // title: "Chat",
+        // headerTitleStyle: {
+        //   fontWeight: "light",
+        //   marginLeft: 30,
+        // },
         headerBackTitleVisible: false,
         headerTitle: () => (
-          <View style={{  flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center"}}>
             <Avatar
               rounded
               size="small"
@@ -90,23 +90,29 @@ const ChatScreen = ({ navigation, route }) => {
                 uri: "https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-avatar-icon-png-image_4162757.jpg",
               }}
             />
-            <Text
+           <View>
+             <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
               style={{
                 fontSize: 20,
-                fontWeight: "bold",
-                marginLeft: 10,
-                color: "white",              
+                fontWeight: "light",
+                marginLeft: 5,
+                color: "white",
+                maxWidth:200,
               }}
+              
             >
               {chatName}
             </Text>
+           </View>
           </View>
         ),
         headerRight: () => (
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TouchableOpacity activeOpacity={0.5} onPress={cameraOpening}>
               <FontAwesome
-                style={{ marginRight: 30 }}
+                style={{ marginRight: 25 }}
                 name="video-camera"
                 size={24}
                 color="white"
@@ -114,7 +120,7 @@ const ChatScreen = ({ navigation, route }) => {
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.5} onPress={Calling}>
               <Foundation
-                style={{ marginRight: 30 }}
+                style={{ marginRight: 10 }}
                 name="telephone"
                 size={24}
                 color="white"
@@ -133,19 +139,19 @@ const ChatScreen = ({ navigation, route }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <KeyboardAvoidingView
         style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardAvoidingVerticalOffset={90}
+        behavior={Platform.OS === "ios" ? "padding" : ""}
+        keyboardAvoidingVerticalOffset={0}
       >
         <StatusBar styles="light" />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-           
-            {messages && <FlatList
-              data={messages}
-              renderItem={(message)=>(<Message message={message}/>)}
-              inverted
-              
-            />}
+            {messages && (
+              <FlatList
+                data={messages}
+                renderItem={(message) => <Message message={message} />}
+                inverted
+              />
+            )}
             <View style={styles.footer}>
               <TextInput
                 style={styles.input}
@@ -173,23 +179,26 @@ const ChatScreen = ({ navigation, route }) => {
 export default ChatScreen;
 
 const styles = StyleSheet.create({
-  container: { flex:1 },
+  container: { flex: 1 },
   footer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginHorizontal: 30,
-    marginBottom: 30,
+    marginHorizontal: 5,
+    marginBottom: 10,
   },
   input: {
     flex: 1,
-    border: "1px solid black",
+    borderStartColor: "red",
     height: 40,
     borderRadius: 10,
-    marginRight: 10,
+    marginRight: 5,
     paddingLeft: 20,
     textAlignVertical: "center",
-    outlineStyle:'none'
+    outlineStyle: "none",
+    backgroundColor: "#3777f0",
+    color: "white",
+    fontSize: 20,
   },
   icon: {
     height: 40,
@@ -201,12 +210,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
   },
-  senderMessageContainer:{
-    border: "1px solid black"
+  senderMessageContainer: {
+    border: "1px solid black",
   },
-  senderMessage:{},
-  receiverMessageContainer:{
-    border:'1px solid black'
-  }
-  
+  senderMessage: {},
+  receiverMessageContainer: {
+    border: "1px solid black",
+  },
 });

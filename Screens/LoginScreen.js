@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
-        console.log("Inside the onAuthStateChange",authUser);
+        //console.log("Inside the onAuthStateChange",authUser);
         navigation.replace("Home");
       } else {
         console.log("not inside the onAuthStateChanged", authUser);
